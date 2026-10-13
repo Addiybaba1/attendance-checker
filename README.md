@@ -29,15 +29,6 @@ Teacher & Student Attendance Comparison System with **Admin Portal** & **2-Hour 
 
 ---
 
-## 🔐 Admin Login Credentials
-
-- **Admin Username:** `AsadAli`
-- **Admin Password:** `AsadAli123!@`
-
-*(Admin panel ke andar Settings tab se username aur password tabdeel bhi kiya ja sakta hai.)*
-
----
-
 ## 🚀 GitHub Pages Par Live Karne Ka Tariqa (Deployment Guide)
 
 Aap is project ko GitHub Pages par 2 minute me free live kar sakte hain:

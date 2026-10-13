@@ -6,13 +6,6 @@ Teacher & Student Attendance Comparison System with **Admin Portal** & **2-Hour 
 
 ---
 
-## 🔐 Admin Login Credentials
-
-- **Admin Username:** `AsadAli`
-- **Admin Password:** `AsadAli123!@`
-
----
-
 ## 🚀 GitHub Pages Deployment Steps
 
 1. Push files to your GitHub repository.
