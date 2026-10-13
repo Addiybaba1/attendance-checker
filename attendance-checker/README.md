@@ -6,6 +6,15 @@ Teacher & Student Attendance Comparison System with **Admin Portal** & **2-Hour 
 
 ---
 
+## 🧪 Demo / Testing User Credentials
+
+- **Username:** `testuser`
+- **Password:** `test123`
+- **Coupon Code:** `OSQ-TEST-2H`
+- **Validity:** 2 Ghante (120 Minutes)
+
+---
+
 ## 🚀 GitHub Pages Deployment Steps
 
 1. Push files to your GitHub repository.

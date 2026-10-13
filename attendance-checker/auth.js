@@ -36,11 +36,11 @@ const DEFAULT_DB = {
   },
   users: [
     {
-      id: 'usr_demo_101',
-      name: 'Teacher / Staff Demo',
-      username: 'user1',
-      password: '123',
-      couponCode: 'OSQ-8291-TX',
+      id: 'usr_test_101',
+      name: 'Testing Teacher',
+      username: 'testuser',
+      password: 'test123',
+      couponCode: 'OSQ-TEST-2H',
       couponDurationMinutes: TWO_HOURS_MINUTES,
       couponCreatedAt: Date.now(),
       activatedAt: null,
@@ -51,9 +51,9 @@ const DEFAULT_DB = {
   ],
   couponsHistory: [
     {
-      code: 'OSQ-8291-TX',
-      userId: 'usr_demo_101',
-      username: 'user1',
+      code: 'OSQ-TEST-2H',
+      userId: 'usr_test_101',
+      username: 'testuser',
       createdAt: Date.now(),
       status: 'unused'
     }
@@ -78,6 +78,23 @@ function getDB() {
       data.admin.username = 'AsadAli';
       data.admin.password = 'AsadAli123!@';
       data.admin.name = 'Asad Ali (Admin)';
+      saveDB(data);
+    }
+    // Ensure test user exists for testing
+    if (!data.users.some(u => u.username === 'testuser')) {
+      data.users.unshift({
+        id: 'usr_test_101',
+        name: 'Testing Teacher',
+        username: 'testuser',
+        password: 'test123',
+        couponCode: 'OSQ-TEST-2H',
+        couponDurationMinutes: TWO_HOURS_MINUTES,
+        couponCreatedAt: Date.now(),
+        activatedAt: null,
+        expiresAt: null,
+        status: 'unused',
+        createdAt: Date.now()
+      });
       saveDB(data);
     }
     return data;

@@ -29,6 +29,17 @@ Teacher & Student Attendance Comparison System with **Admin Portal** & **2-Hour 
 
 ---
 
+## 🧪 Demo / Testing User Credentials
+
+Testing ke liye aap is demo user account se login karke check kar sakte hain:
+
+- **Username:** `testuser`
+- **Password:** `test123`
+- **Coupon Code:** `OSQ-TEST-2H`
+- **Validity:** 2 Ghante (Login karne ke baad timer shuru hoga)
+
+---
+
 ## 🚀 GitHub Pages Par Live Karne Ka Tariqa (Deployment Guide)
 
 Aap is project ko GitHub Pages par 2 minute me free live kar sakte hain:
