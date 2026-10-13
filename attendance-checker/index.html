@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Attendance Checker – OSquare Education</title>
+  <meta name="description" content="Teacher & Student Attendance Comparison System for OSquare Education" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+
+<body>
+
+  <!-- Animated Background -->
+  <div class="bg-anim">
+    <div class="bg-blob bg-blob-1"></div>
+    <div class="bg-blob bg-blob-2"></div>
+    <div class="bg-blob bg-blob-3"></div>
+  </div>
+  <div class="bg-grid"></div>
+
+  <!-- ── Header ── -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <div class="logo-icon">
+          <i class="fa-solid fa-chart-column"></i>
+        </div>
+        <div class="logo-text">
+          <span class="logo-title">Attendance Checker</span>
+          <span class="logo-sub">Addiy Dot Code Education System</span>
+        </div>
+      </div>
+      <div class="header-right" id="headerRight">
+        <div class="header-badge">
+          <span class="pulse-dot"></span>
+          Secure Access
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Main ── -->
+  <main class="main" id="mainApp">
+
+    <!-- ═══ STEP 1: Upload ═══ -->
+    <section class="card" id="step1">
+      <div class="step-header">
+        <div class="step-num">01</div>
+        <div>
+          <div class="step-title">Files Upload کریں</div>
+          <div class="step-subtitle">دونوں Excel files منتخب کریں تاکہ analysis شروع ہو سکے</div>
+        </div>
+      </div>
+
+      <div class="upload-grid">
+
+        <!-- Teacher File -->
+        <div class="upload-box" id="teacherUploadBox" onclick="document.getElementById('teacherFile').click()">
+          <input type="file" id="teacherFile" accept=".xlsx,.xls" hidden />
+          <div class="upload-icon-wrap teacher-icon">
+            <i class="fa-solid fa-user-tie"></i>
+          </div>
+          <h3>Monthly Teacher File</h3>
+          <p>OSquare Attendance Sheet (Wide Format)</p>
+          <button class="btn-upload" onclick="event.stopPropagation(); document.getElementById('teacherFile').click()">
+            <i class="fa-solid fa-folder-open"></i> File Choose کریں
+          </button>
+          <div class="file-status" id="teacherStatus">کوئی file منتخب نہیں</div>
+          <div class="upload-shimmer" id="teacherProgress"></div>
+        </div>
+
+        <!-- Student File -->
+        <div class="upload-box" id="studentUploadBox" onclick="document.getElementById('studentFile').click()">
+          <input type="file" id="studentFile" accept=".xlsx,.xls" hidden />
+          <div class="upload-icon-wrap student-icon">
+            <i class="fa-solid fa-users-between-lines"></i>
+          </div>
+          <h3>Student Attendance Report</h3>
+          <p>Batch-wise Long Format Attendance Report</p>
+          <button class="btn-upload" onclick="event.stopPropagation(); document.getElementById('studentFile').click()">
+            <i class="fa-solid fa-folder-open"></i> File Choose کریں
+          </button>
+          <div class="file-status" id="studentStatus">کوئی file منتخب نہیں</div>
+          <div class="upload-shimmer" id="studentProgress"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══ STEP 2: Filters ═══ -->
+    <section class="card" id="step2" style="display:none">
+      <div class="step-header">
+        <div class="step-num">02</div>
+        <div>
+          <div class="step-title">Teacher اور Batch منتخب کریں</div>
+          <div class="step-subtitle">Analysis کے لیے teacher اور batch کا انتخاب کریں</div>
+        </div>
+      </div>
+
+      <div class="filter-grid">
+        <div class="filter-group">
+          <label for="teacherSelect">
+            <i class="fa-solid fa-chalkboard-user"></i>
+            Teacher Name
+          </label>
+          <div class="select-wrapper">
+            <select id="teacherSelect">
+              <option value="">— Teacher منتخب کریں —</option>
+            </select>
+            <i class="fa-solid fa-chevron-down select-chevron"></i>
+          </div>
+        </div>
+        <div class="filter-group">
+          <label for="batchSelect">
+            <i class="fa-solid fa-layer-group"></i>
+            Batch Code
+          </label>
+          <div class="select-wrapper">
+            <select id="batchSelect" disabled>
+              <option value="">— پہلے Teacher منتخب کریں —</option>
+            </select>
+            <i class="fa-solid fa-chevron-down select-chevron"></i>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-analyze" id="analyzeBtn" onclick="runAnalysis()" disabled>
+        <i class="fa-solid fa-magnifying-glass-chart"></i>
+        Attendance Match چیک کریں
+      </button>
+    </section>
+
+    <!-- ═══ STEP 3: Results ═══ -->
+    <section class="card" id="step3" style="display:none">
+      <div class="step-header">
+        <div class="step-num">03</div>
+        <div>
+          <div class="step-title">Analysis نتائج</div>
+          <div class="step-subtitle" id="resultSubtitle">Attendance comparison results</div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-row" id="statsRow"></div>
+
+      <!-- Legend -->
+      <div class="legend">
+        <div class="legend-item">
+          <span class="legend-badge badge-match"><i class="fa-solid fa-circle-check"></i> Match</span>
+          دونوں Present (P/P)
+        </div>
+        <div class="legend-item">
+          <span class="legend-badge badge-mismatch"><i class="fa-solid fa-triangle-exclamation"></i> Mismatch</span>
+          مختلف Status
+        </div>
+        <div class="legend-item">
+          <span class="mismatch-src src-osquare" style="font-size:0.7rem;padding:3px 8px">(OSquare)</span>
+          Aptrack P ہے، OSquare میں A
+        </div>
+        <div class="legend-item">
+          <span class="mismatch-src src-aptrack" style="font-size:0.7rem;padding:3px 8px">(Aptrack)</span>
+          OSquare P مارکا، Aptrack میں نہیں
+        </div>
+        <div class="legend-item">
+          <span class="legend-badge badge-absent"><i class="fa-solid fa-circle-xmark"></i> A/A</span>
+          دونوں Absent
+        </div>
+        <div class="legend-item">
+          <span class="legend-badge badge-na"><i class="fa-solid fa-ban"></i> N/A</span>
+          Holiday / N/A
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="table-scroll" id="tableContainer"></div>
+
+      <!-- Export -->
+      <div class="export-section">
+        <div class="export-label">
+          <i class="fa-solid fa-file-excel" style="color:#16a34a;font-size:1.1rem;"></i>
+          Report Download کریں
+        </div>
+        <div class="export-btns">
+          <button class="btn-export btn-full" onclick="exportReport()">
+            <i class="fa-solid fa-download"></i>
+            Full Report (Excel)
+          </button>
+          <button class="btn-export btn-mismatch" onclick="exportMismatchOnly()">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            Mismatches Only
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ════════════════════════════════════════════════════════
+       AUTHENTICATION / GATEKEEPER OVERLAY
+       ════════════════════════════════════════════════════════ -->
+  <div class="auth-overlay active" id="authOverlay">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="auth-badge">
+          <i class="fa-solid fa-shield-halved"></i> Addiy Dot Code Education
+        </div>
+        <h1 class="auth-title">Attendance Checker</h1>
+        <p class="auth-subtitle">Addiy Dot Code Education System — Login karke access karein</p>
+      </div>
+
+      <div class="auth-tabs">
+        <button class="auth-tab-btn active" id="tabUserBtn" onclick="switchAuthTab('user')">
+          <i class="fa-solid fa-ticket"></i> User Access (Coupon)
+        </button>
+        <button class="auth-tab-btn" id="tabAdminBtn" onclick="switchAuthTab('admin')">
+          <i class="fa-solid fa-user-gear"></i> Admin Login
+        </button>
+      </div>
+
+      <div class="auth-body">
+        <!-- User Login Form -->
+        <form class="auth-form active" id="userLoginForm">
+          <div class="auth-field">
+            <label for="userLoginName"><i class="fa-regular fa-user"></i> Username</label>
+            <div class="auth-input-wrap">
+              <i class="fa-solid fa-user field-icon"></i>
+              <input type="text" id="userLoginName" class="auth-input" placeholder="Apna username darj karein" required autocomplete="username" />
+            </div>
+          </div>
+
+          <div class="auth-field">
+            <label for="userLoginPass"><i class="fa-solid fa-lock"></i> Password</label>
+            <div class="auth-input-wrap">
+              <i class="fa-solid fa-key field-icon"></i>
+              <input type="password" id="userLoginPass" class="auth-input" placeholder="Apna password darj karein" required autocomplete="current-password" />
+              <button type="button" class="auth-toggle-pwd" onclick="togglePasswordVisibility('userLoginPass', this)">
+                <i class="fa-regular fa-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="auth-field">
+            <label for="userLoginCoupon">
+              <i class="fa-solid fa-ticket"></i> 2-Hour Coupon Code
+            </label>
+            <div class="auth-input-wrap">
+              <i class="fa-solid fa-receipt field-icon"></i>
+              <input type="text" id="userLoginCoupon" class="auth-input coupon-input" placeholder="OSQ-XXXX-XX" required />
+            </div>
+            <div class="auth-hint">
+              <i class="fa-solid fa-circle-info"></i>
+              Admin se mila hua unique coupon code enter karein (2 ghante validity)
+            </div>
+          </div>
+
+          <button type="submit" class="auth-btn-submit">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i> Login & Access Start Karein
+          </button>
+        </form>
+
+        <!-- Admin Login Form -->
+        <form class="auth-form" id="adminLoginForm">
+          <div class="auth-field">
+            <label for="adminLoginName"><i class="fa-solid fa-user-shield"></i> Admin Username</label>
+            <div class="auth-input-wrap">
+              <i class="fa-solid fa-user-shield field-icon"></i>
+              <input type="text" id="adminLoginName" class="auth-input" required autocomplete="username" />
+            </div>
+          </div>
+
+          <div class="auth-field">
+            <label for="adminLoginPass"><i class="fa-solid fa-lock"></i> Admin Password</label>
+            <div class="auth-input-wrap">
+              <i class="fa-solid fa-lock field-icon"></i>
+              <input type="password" id="adminLoginPass" class="auth-input" required autocomplete="current-password" />
+              <button type="button" class="auth-toggle-pwd" onclick="togglePasswordVisibility('adminLoginPass', this)">
+                <i class="fa-regular fa-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="auth-hint" style="margin-top:2px;">
+            <i class="fa-solid fa-circle-check" style="color:#10b981;"></i>
+            Admin ke liye 100% Free Lifetime Unlimited Access (No coupon required)
+          </div>
+
+          <button type="submit" class="auth-btn-submit auth-btn-admin">
+            <i class="fa-solid fa-shield-halved"></i> Admin Portal Login
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════
+       ADMIN MANAGEMENT DASHBOARD MODAL
+       ════════════════════════════════════════════════════════ -->
+  <div class="admin-modal-overlay" id="adminModal">
+    <div class="admin-modal-container">
+      <!-- Modal Header -->
+      <div class="admin-modal-hdr">
+        <div class="admin-hdr-title">
+          <div class="admin-hdr-icon">
+            <i class="fa-solid fa-user-gear"></i>
+          </div>
+          <div class="admin-hdr-text">
+            <h2>Admin Management Panel</h2>
+            <p>Users Management, Random Coupon Generator & JSON Database</p>
+          </div>
+        </div>
+        <div class="admin-hdr-actions">
+          <button class="btn-modal-close" onclick="closeAdminPanel()" title="Close Panel">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs inside Admin Modal -->
+      <div class="admin-nav-tabs">
+        <button class="admin-nav-tab active" id="adminTabBtnUsers" onclick="switchAdminTab('users')">
+          <i class="fa-solid fa-users"></i> Users & Coupons List
+        </button>
+        <button class="admin-nav-tab" id="adminTabBtnBackup" onclick="switchAdminTab('backup')">
+          <i class="fa-solid fa-database"></i> JSON Backup & Settings
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="admin-modal-body">
+
+        <!-- TAB 1: USERS & COUPONS VIEW -->
+        <div id="adminViewUsers">
+          <!-- Stats Cards -->
+          <div class="admin-stats-grid">
+            <div class="admin-stat-card">
+              <div class="admin-stat-icon icon-blue">
+                <i class="fa-solid fa-users"></i>
+              </div>
+              <div class="admin-stat-info">
+                <span class="admin-stat-value" id="statTotalUsers">0</span>
+                <span class="admin-stat-label">Total Users</span>
+              </div>
+            </div>
+
+            <div class="admin-stat-card">
+              <div class="admin-stat-icon icon-green">
+                <i class="fa-solid fa-user-check"></i>
+              </div>
+              <div class="admin-stat-info">
+                <span class="admin-stat-value" id="statActiveUsers">0</span>
+                <span class="admin-stat-label">Active Users (Using Now)</span>
+              </div>
+            </div>
+
+            <div class="admin-stat-card">
+              <div class="admin-stat-icon icon-amber">
+                <i class="fa-solid fa-user-clock"></i>
+              </div>
+              <div class="admin-stat-info">
+                <span class="admin-stat-value" id="statExpiredUsers">0</span>
+                <span class="admin-stat-label">Expired (Need New Code)</span>
+              </div>
+            </div>
+
+            <div class="admin-stat-card">
+              <div class="admin-stat-icon icon-purple">
+                <i class="fa-solid fa-ticket"></i>
+              </div>
+              <div class="admin-stat-info">
+                <span class="admin-stat-value" id="statTotalCoupons">0</span>
+                <span class="admin-stat-label">Total Coupons Issued</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Toolbar -->
+          <div class="admin-toolbar">
+            <div class="admin-search-wrap">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="adminSearchUsers" class="admin-search-input" placeholder="User name, username ya coupon search karein..." />
+            </div>
+
+            <div class="admin-actions-btns">
+              <button class="btn-admin-sec" onclick="exportDatabaseAsJSON()">
+                <i class="fa-solid fa-download"></i> JSON Export
+              </button>
+              <button class="btn-admin-primary" onclick="openAddUserModal()">
+                <i class="fa-solid fa-user-plus"></i> Naya User Banayein
+              </button>
+            </div>
+          </div>
+
+          <!-- Users Table -->
+          <div class="admin-table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>User Details</th>
+                  <th>Password</th>
+                  <th>Coupon Code</th>
+                  <th>Status</th>
+                  <th>Time Left</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminUsersTableBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB 2: BACKUP & SETTINGS VIEW -->
+        <div id="adminViewBackup" style="display:none;">
+          <div class="backup-section">
+            <div class="backup-card">
+              <div>
+                <h4><i class="fa-solid fa-download" style="color:#4f46e5;"></i> JSON Database Backup</h4>
+                <p>Tamam users, active coupons aur settings ko `.json` file me download karein taake kisi bhi waqt restore kiya ja sake.</p>
+              </div>
+              <button class="btn-admin-primary" onclick="exportDatabaseAsJSON()">
+                <i class="fa-solid fa-file-arrow-down"></i> Download JSON File
+              </button>
+            </div>
+
+            <div class="backup-card">
+              <div>
+                <h4><i class="fa-solid fa-upload" style="color:#059669;"></i> JSON Database Restore</h4>
+                <p>Kisi pehle se save shuda database file (`.json`) ko upload karke data restore karein.</p>
+              </div>
+              <div>
+                <input type="file" id="jsonDbFileInput" accept=".json" style="display:none;" onchange="importDatabaseFromJSON(this)" />
+                <button class="btn-admin-sec" style="width:100%;" onclick="document.getElementById('jsonDbFileInput').click()">
+                  <i class="fa-solid fa-folder-open"></i> Upload JSON File
+                </button>
+              </div>
+            </div>
+
+            <div class="backup-card">
+              <div>
+                <h4><i class="fa-solid fa-key" style="color:#d97706;"></i> Admin Login Password</h4>
+                <p>Admin portal ka username aur password tabdeel karein.</p>
+              </div>
+              <form onsubmit="handleUpdateAdminCredentials(event)" style="display:flex;flex-direction:column;gap:8px;">
+                <input type="text" id="adminNewUsername" class="auth-input" placeholder="New Admin Username" required style="padding:8px 12px;" />
+                <input type="password" id="adminNewPassword" class="auth-input" placeholder="New Admin Password" required style="padding:8px 12px;" />
+                <button type="submit" class="btn-admin-sec" style="margin-top:4px;">
+                  <i class="fa-solid fa-check"></i> Update Password
+                </button>
+              </form>
+            </div>
+
+            <div class="backup-card">
+              <div>
+                <h4><i class="fa-solid fa-triangle-exclamation" style="color:#ef4444;"></i> Factory Reset</h4>
+                <p>Tamam users aur custom coupons ko delete karke default halat me reset karein.</p>
+              </div>
+              <button class="btn-admin-sec" style="color:#ef4444;border-color:#fecaca;" onclick="handleResetDatabase()">
+                <i class="fa-solid fa-trash-can"></i> Reset to Defaults
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════
+       MODAL: ADD NEW USER WITH AUTO RANDOM COUPON
+       ════════════════════════════════════════════════════════ -->
+  <div class="dialog-overlay" id="addUserModal">
+    <div class="dialog-box">
+      <div class="dialog-hdr">
+        <h3><i class="fa-solid fa-user-plus" style="color:#4f46e5;margin-right:8px;"></i> Naya User & Coupon Banayein</h3>
+        <button class="btn-modal-close" onclick="closeAddUserModal()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <form id="addUserForm" onsubmit="submitAddUser(event)">
+        <div class="dialog-body">
+          <div class="auth-field">
+            <label for="newUserName"><i class="fa-regular fa-user"></i> Full Name</label>
+            <input type="text" id="newUserName" class="auth-input" placeholder="e.g. Sir Asad / Teacher" required />
+          </div>
+
+          <div class="auth-field">
+            <label for="newUserUsername"><i class="fa-solid fa-at"></i> Username</label>
+            <input type="text" id="newUserUsername" class="auth-input" placeholder="e.g. asad_teacher" required />
+          </div>
+
+          <div class="auth-field">
+            <label for="newUserPassword"><i class="fa-solid fa-lock"></i> Password</label>
+            <input type="text" id="newUserPassword" class="auth-input" placeholder="e.g. 123456" required />
+          </div>
+
+          <div class="auth-field">
+            <label><i class="fa-solid fa-ticket"></i> Auto-Generated Random Coupon Code</label>
+            <div class="coupon-generator-box">
+              <div class="coupon-gen-left">
+                <span>Unique Random Coupon</span>
+                <span class="coupon-gen-code" id="modalGeneratedCoupon">OSQ-0000-XX</span>
+              </div>
+              <button type="button" class="btn-shuffle-coupon" onclick="shuffleModalCoupon()" title="Naya Random Code Generate Karein">
+                <i class="fa-solid fa-dice"></i> Shuffle
+              </button>
+            </div>
+          </div>
+
+          <div class="auth-field">
+            <label for="newUserDuration"><i class="fa-regular fa-clock"></i> Access Duration</label>
+            <select id="newUserDuration" class="auth-input" style="padding:10px 14px;">
+              <option value="120" selected>2 Ghante (120 Minutes - Standard)</option>
+              <option value="60">1 Ghanta (60 Minutes)</option>
+              <option value="180">3 Ghante (180 Minutes)</option>
+              <option value="240">4 Ghante (240 Minutes)</option>
+              <option value="1440">24 Ghante (1 Day)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="dialog-ftr">
+          <button type="button" class="btn-admin-sec" onclick="closeAddUserModal()">Cancel</button>
+          <button type="submit" class="btn-admin-primary">
+            <i class="fa-solid fa-check"></i> User Banayein & Code Save Karein
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════
+       ACCESS EXPIRED MODAL (2 HOURS FINISHED)
+       ════════════════════════════════════════════════════════ -->
+  <div class="expired-modal-overlay" id="expiredModal">
+    <div class="expired-card">
+      <div class="expired-icon-wrap">
+        <i class="fa-solid fa-hourglass-end"></i>
+      </div>
+      <h2>Coupon Code Expire Ho Gaya!</h2>
+      <p>
+        <span id="expiredUserName" style="font-weight:700;color:#1e293b;">User</span> ka 2 ghante ka access mukammal ho chuka hai aur system se auto logout kar diya gaya hai.
+      </p>
+
+      <div class="expired-info-box">
+        <strong><i class="fa-solid fa-circle-exclamation"></i> Mazeed Istemal Ke Liye:</strong>
+        <ul>
+          <li>Admin se rabta karke <strong>New 2-Hour Coupon Code</strong> hasil karein.</li>
+          <li>Purana coupon code (<span id="expiredUserCode" style="font-family:monospace;font-weight:700;">—</span>) expire ho chuka hai.</li>
+          <li>Naya coupon code milne par dobara login karein.</li>
+        </ul>
+      </div>
+
+      <button class="auth-btn-submit" onclick="closeExpiredModal()">
+        <i class="fa-solid fa-arrow-rotate-left"></i> Login Screen Par Jayein
+      </button>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="auth.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
