@@ -1,108 +1,79 @@
-# 🎓 Attendance Checker – Addiy Dot Code Education System
+# Attendance Checker – Addiy Dot Code Education System
 
-Teacher & Student Attendance Comparison System with **Admin Portal** & **2-Hour Auto-Expiring Coupon Code Engine**.
+[![Live Demo](https://img.shields.io/badge/Demo-Live_Portal-brightgreen.svg)](https://addiybaba1.github.io/attendance-checker/)
+[![Platform](https://img.shields.io/badge/Platform-GitHub_Pages-blue.svg)](https://pages.github.com/)
+[![Tech Stack](https://img.shields.io/badge/Stack-HTML5_%7C_CSS3_%7C_ES6+-orange.svg)](#tech-stack)
+[![License](https://img.shields.io/badge/License-MIT-purple.svg)](#license)
 
-100% Static & Client-Side — **GitHub Pages par bilkul FREE live chalne ke liye tayar!**
-
----
-
-## 🌟 Key Features
-
-1. **👑 Admin Portal (100% Free Lifetime Access)**
-   - Admin ke liye koi coupon code ki zaroorat nahi hai.
-   - Admin login karke users create kar sakta hai, coupon codes manage kar sakta hai aur pura system use kar sakta hai.
-
-2. **🎟️ 2-Hour Auto-Expiring Coupon System**
-   - Jab admin naya user banata hai, system automatically **unique random coupon code** (e.g. `OSQ-4821-XF`) generate karta hai.
-   - User login karta hai aur coupon code enter karta hai to uska **2 ghante (120 minutes) ka timer** shuru ho jata hai.
-   - Header me live ticking countdown badge show hota hai (`⏳ 01:58:24 Baqi`).
-   - **Auto-Kickout:** 2 ghante mukammal hotay hi system user ko foran logout karke lock kar deta hai (`khud system se bahar nikal deta hai`).
-   - Dobara use karne ke liye Admin ko us user ke liye naya coupon code generate karke dena hota hai.
-
-3. **💾 JSON Database & Backup (GitHub Pages Compatible)**
-   - Sara data browser ke `localStorage` me clean JSON format me store hota hai.
-   - Kisi paid server ya database ki zaroorat nahi.
-   - Admin panel se **1-Click "Download JSON Backup"** aur **"Upload JSON Restore"** ki sahulat mojood hai.
-
-4. **📲 1-Click WhatsApp Invite Share**
-   - Admin panel me har user ke aage WhatsApp icon par click karke mukammal login message (Link, Username, Password, Coupon Code, Validity) copy karke user ko send kiya ja sakta hai.
+A modern, high-performance web platform designed for educational institutions to automate the cross-verification of faculty records against batch-wise student attendance reports. Built with a 100% serverless, client-side architecture suitable for free hosting on GitHub Pages.
 
 ---
 
-## 🧪 Demo / Testing User Credentials
+## 🚀 Live Demo
 
-Testing ke liye aap is demo user account se login karke check kar sakte hain:
+**Portal URL:** [https://addiybaba1.github.io/attendance-checker/](https://addiybaba1.github.io/attendance-checker/)
 
-- **Username:** `testuser`
-- **Password:** `test123`
-- **Coupon Code:** `OSQ-TEST-2H`
-- **Validity:** 2 Ghante (Login karne ke baad timer shuru hoga)
+### 🧪 Demo User Credentials
+For review and evaluation, use the pre-configured user credentials below:
 
----
-
-## 🚀 GitHub Pages Par Live Karne Ka Tariqa (Deployment Guide)
-
-Aap is project ko GitHub Pages par 2 minute me free live kar sakte hain:
-
-### Step 1: Git Repository Banayein Aur Push Karein
-Apne terminal ya command prompt me yeh commands run karein:
-
-```bash
-git init
-git add .
-git commit -m "Initial commit: Attendance Checker with Admin and Coupon System"
-git branch -M main
-git remote add origin https://github.com/<AAPKA_GITHUB_USERNAME>/<AAPKA_REPO_NAME>.git
-git push -u origin main
-```
-
-*(Note: `.gitignore` file pehle se configured hai taake `node_modules` upload na ho).*
-
-### Step 2: GitHub Pages Enable Karein
-1. GitHub par apne repository page par jayein.
-2. Upar **Settings** tab par click karein.
-3. Left menu me **Pages** par click karein.
-4. **Build and deployment** section me:
-   - **Source:** `Deploy from a branch`
-   - **Branch:** `main` aur folder `/(root)` select karein.
-5. **Save** par click karein.
-
-1-2 minute baad aapki website is link par live ho jayegi:
-👉 `https://<AAPKA_GITHUB_USERNAME>.github.io/<AAPKA_REPO_NAME>/`
+| Field | Value |
+| :--- | :--- |
+| **Portal Access** | User Access (Coupon) |
+| **Username** | `testuser` |
+| **Password** | `test123` |
+| **Coupon Code** | `OSQ-TEST-2H` |
+| **Session Validity** | 2 Hours (Active Countdown) |
 
 ---
 
-## 📁 Folder Structure
+## ✨ Features & Architecture
+
+### 📊 Automated Attendance Reconciliation
+- **Wide-Format Teacher Processing:** Analyzes multi-date faculty attendance sheets.
+- **Long-Format Student Processing:** Indexes large student datasets across dates, IDs, and batches.
+- **Mismatch Diagnostics:** Identifies discrepancies (Present vs. Absent) with comprehensive Excel export options (Full Report or Mismatches Only).
+
+### 🛡️ Administrative Portal
+- **Centralized Dashboard:** Real-time metrics for total users, active sessions, and expired credentials.
+- **User Provisioning:** On-demand account creation with customizable access parameters.
+- **Automated Messaging:** Single-click clipboard template for dispatching login credentials via WhatsApp or email.
+
+### 🎟️ 2-Hour Auto-Expiring Coupon Engine
+- **Unique Code Generator:** Generates formatted random tokens (`OSQ-XXXX-XX`).
+- **Real-Time Countdown:** Dynamic header indicator tracking session time remaining.
+- **Automated Session Termination:** Instantly revokes system access upon expiration of the 2-hour window.
+
+### 💾 Zero-Backend Data Persistence
+- Client-side JSON database powered by Web Storage APIs.
+- One-click **JSON Database Export** and **JSON Restore** utility for data backup across devices.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Core:** HTML5, Modern Vanilla JavaScript (ES6+)
+- **Styling:** Vanilla CSS3 with glassmorphism design tokens & responsive layouts
+- **Excel Engine:** [SheetJS (XLSX.js)](https://sheetjs.com/)
+- **Icons & Fonts:** Font Awesome 6.5, Google Fonts (Inter)
+- **Deployment:** GitHub Pages (Static hosting)
+
+---
+
+## 📁 Repository Structure
 
 ```text
-Working/
-│
-├── index.html           # Main Web Application & Login Portals (At Root for GitHub Pages)
-├── style.css            # Attendance comparison UI styles & animations
-├── admin.css            # Admin dashboard, coupon badges, timer pill styles
-├── app.js               # Excel parsing (Teacher vs Student comparison logic)
-├── auth.js              # Authentication, 2-hour timer engine, JSON DB & coupon generator
-├── .gitignore           # Excludes node_modules from GitHub
-├── README.md            # Project documentation & deployment guide
-│
-└── attendance-checker/  # Subdirectory backup copy
-    ├── index.html
-    ├── style.css
-    ├── admin.css
-    ├── app.js
-    ├── auth.js
-    ├── .gitignore
-    └── README.md
+├── index.html       # Primary application gateway and portal interfaces
+├── style.css        # Main stylesheet for analytical UI and comparisons
+├── admin.css        # Administrative dashboard and modal component styles
+├── app.js           # Excel spreadsheet ingestion and comparison algorithms
+├── auth.js          # Authentication controller, countdown engine & JSON storage
+├── .gitignore       # Repository exclusion configuration
+└── README.md        # Technical documentation
 ```
 
 ---
 
-## 👥 User Login Ka Tariqa (User Guide)
+## 📄 License
 
-1. User website link open karega.
-2. **User Access (Coupon)** tab par:
-   - Apna **Username** enter karega.
-   - Apna **Password** enter karega.
-   - Admin se mila hua **2-Hour Coupon Code** enter karega.
-3. Login hote hi 2 ghante ka countdown timer shuru ho jayega.
-4. 2 ghante pure hotay hi screen lock ho jayegi aur user logout ho jayega.
+This project is licensed under the MIT License.  
+Developed for **Addiy Dot Code Education System**.
